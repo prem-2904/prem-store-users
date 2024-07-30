@@ -1,0 +1,18 @@
+.slick-prev,
+.slick-next {
+    color: #000 !important
+}
+
+.slick-next {
+    right: -30px;
+}
+
+.slick-prev {
+    left: -30px;
+}
+
+
+:host .carousel .slick-prev {
+    left: -30px !important;
+    color: #000 !important
+}

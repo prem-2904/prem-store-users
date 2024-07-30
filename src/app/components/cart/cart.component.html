@@ -1,0 +1,101 @@
+@if (cartDetails.cartProduct && cartDetails.cartProduct.length) {
+<div class="w-full flex gap-4 flex-col lg:flex-row min-w-min pb-4 min-h-96">
+    <div class="lg:w-2/3 w-full cart">
+        <div class="bg-white m-auto shadow-xl h-auto px-8 py-3 mb-4">
+            <h5>Deliver to: Prem Kumar K, 600000</h5>
+            <h6>Test Area, Test address, Test City, Test State</h6>
+        </div>
+        <div class="bg-white m-auto px-8 py-4 h-auto shadow-xl mb-4">
+            <!-- <h3 class="font-bold text-center">Cart Items(5)</h3> -->
+            <div class="items flex gap-2 flex-col w-full">
+                @if (cartDetails && cartDetails.cartProduct) {
+                @for (item of cartDetails.cartProduct; track $index) {
+                <div class="flex justify-between items-center">
+                    <div class="img flex gap-2">
+                        <div class="img">
+                            <img [src]="item.itemId.productImages[0]" alt="Product"
+                                class="h-20 w-20 object-cover rounded-t-xl" />
+                        </div>
+                        <div class="title">
+                            <h5>{{item.itemId.productName}}</h5>
+                            <h6 class="font-light">{{item.itemId.productDesc.substring(0,50)}}...</h6>
+                            <div class="flex gap-2 items-end">
+                                <p class="text-gray-600 text-lg font-bold">
+                                    ₹{{item.salePrice?.toFixed(2)}}
+                                </p>
+                                <p class="text-gray-400 text-sm mt-1 line-through">
+                                    ₹{{item.mrpPrice?.toFixed(2)}}</p>
+                                <p class="text-sm text-green-500 mt-1">{{item.discount}}%
+                                    off</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quantity">
+                        <select [(ngModel)]="item.quantity" (change)="calculateTotalPrice()" name="quantity"
+                            id="quantity"
+                            class="p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                        </select>
+                    </div>
+                    <div class="total">
+                        <span>₹{{((item.salePrice)!*(item.quantity)!).toFixed(2)}}</span>
+                    </div>
+                </div>
+                <hr>
+                }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="lg:w-1/3 w-full amnt relative lg:fixed lg:right-2 lg:top-19 lg:px-3">
+        <div class="payment bg-white shadow-xl px-4 py-2">
+            <div class="m-4">
+                <h5>Payment Details</h5>
+            </div>
+            <hr>
+            @if (cartDetails) {
+            <div class="flex justify-between m-4">
+                <span>Total ({{cartDetails.totalItems}})</span>
+                <span>₹{{cartDetails.totalPriceBeforeDiscount}}</span>
+            </div>
+            <div class="flex justify-between m-4">
+                <span>Discount ({{cartDetails.totalDiscount}}%)</span>
+                <span>(-) ₹{{cartDetails.discountAmount}}</span>
+            </div>
+            <div class="flex justify-between m-4">
+                <span>Delivery Charge</span>
+                <span>₹45.00</span>
+            </div>
+            <hr>
+            <div class="flex justify-between m-4">
+                <span class="font-bold text-xl">Total Amount</span>
+                <span>₹{{cartDetails.totalPrice}}</span>
+            </div>
+            }
+        </div>
+        <div class="footer bg-white relative bottom-0 p-4 w-full">
+            <button (click)="checkout()"
+                class="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Continue to Checkout
+            </button>
+        </div>
+    </div>
+</div>
+}
+@else {
+<div class="bg-white shadow w-full h-40 flex items-center justify-center flex-col gap-4 rounded">
+    <p>No items added in the cart!!!</p>
+    <button routerLink="/store" class="p-3 bg-blue-400 text-white hover:bg-blue-600">
+        Go to shop!
+    </button>
+</div>
+
+}

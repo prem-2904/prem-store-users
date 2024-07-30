@@ -1,0 +1,27 @@
+<div class="bg-white p-4">
+    <h5>My Orders ({{ordersList?.length}})</h5>
+    @for (order of ordersList; track order._id) {
+        <div (click)="orderDetails(order._id)" class="flex justify-between items-start m-2 border border-gray-200 p-2 hover:shadow-md hover:cursor-pointer">
+            <div class="img flex gap-2">
+                <div class="img">
+                    <img [src]="order.orderItems.orderItem?.productImages[0]" alt="Product"
+                        class="h-20 w-20 object-cover rounded-t-xl" />
+                </div>
+                <div class="title">
+                    <h5>{{order.orderItems.orderItem?.productName.substring(0,25)}}...</h5>
+                    <h6 class="font-light text-gray-600">#{{order.id}}</h6>
+                    <h6 class="font-light text-gray-600">Ordered Quantity: {{order.orderItems.orderedQuantity}}</h6>
+                    <h6 class="font-light text-gray-600">Item Price: ₹{{order.orderItems.orderItemPrice}}</h6>
+                </div>
+            </div>
+            <div class="order-price">
+                <h5>₹{{order.orderItems?.orderTotal}}</h5>
+            </div>
+            <div class="order-status">
+                <span class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">
+                    {{order.orderItems?.orderStatus | uppercase}}
+                </span>
+            </div>
+        </div>
+    }
+</div>

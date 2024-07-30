@@ -1,0 +1,108 @@
+<div class="breadcrumbs flex justify-between bg-white">
+    <app-breadcrumbs [items]="breadcrumbsData" />
+    <div class="actions flex justify-center items-center px-2">
+        @if (orderDetails.orderedItem.orderStatus._id==="delivered") {
+        <button type="button"
+            class="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-bold rounded">
+            Return Order
+        </button>
+        } @else if (orderDetails.orderedItem.orderStatus.statusOrder &&orderDetails.orderedItem.orderStatus.statusOrder
+        <=4) { <button type="button"
+            class="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-bold rounded">
+            Cancel Order
+            </button>
+            }
+    </div>
+</div>
+
+@if (orderDetails) {
+<div class="border border-gray-200 bg-white px-2 py-3 my-4">
+    <div class="flex gap-2 justify-between align-top px-4">
+        <div class="orderdata">
+            <h5 class="font-medium">Order Details</h5>
+            <h6>#{{orderDetails.orderData._id}}</h6>
+            <div class="flex flex-col">
+                <span>Payment Status: {{orderDetails.orderData.orderAmountPaid}}</span>
+                <span>Payment Mode: {{orderDetails.orderData.typeOfPayment}}</span>
+            </div>
+        </div>
+        <hr>
+        <div class="deliverydata">
+            <h5 class="font-medium">Delivery Address</h5>
+            <h6>{{orderDetails.orderData.orderFullName}}</h6>
+            <div class="flex flex-col">
+                <span>{{orderDetails.orderData.orderAddressLine1}},
+                    {{orderDetails.orderData.orderAddressLine2}}</span>
+                <span>{{orderDetails.orderData.orderAddressPincode}}, Phone No:
+                    {{orderDetails.orderData.orderPhone}}</span>
+                <span>Test Area, Test address, Test City, Test State</span>
+            </div>
+        </div>
+        @if (orderDetails.orderData.typeOfPayment==='online') {
+        <hr>
+        <div class="flex flex-col">
+            <h5 class="font-medium">Transaction Details</h5>
+            <span>Transaction ID: {{orderDetails.orderData.paymentTransactionId}}</span>
+        </div>
+        }
+    </div>
+</div>
+<!-- <div class="border border-gray-200 bg-white px-2 py-3 my-4">
+    <h5 class="font-medium">Delivery Address</h5>
+    <h6>{{orderDetails.orderData.orderFullName}}</h6>
+    <div class="flex flex-col">
+        <span>{{orderDetails.orderData.orderAddressLine1}}, {{orderDetails.orderData.orderAddressLine2}}</span>
+        <span>{{orderDetails.orderData.orderAddressPincode}}, Phone No: {{orderDetails.orderData.orderPhone}}</span>
+        <span>Test Area, Test address, Test City, Test State</span>
+    </div>
+</div> -->
+<div class="border border-gray-200 bg-white p-2">
+    <!-- <h5 class="font-medium">Item Details</h5> -->
+    <div class="m-2 p-2 hover:cursor-pointer">
+        <div class="flex justify-between items-start ">
+            <div class="img flex gap-2">
+                <div class="img">
+                    <img [src]="orderDetails.orderedItem.orderedproductImages[0]" alt="Product"
+                        class="h-20 w-20 object-cover rounded-t-xl" />
+                </div>
+                <div class="title">
+                    <h5>{{orderDetails.orderedItem.orderedproductName.substring(0,25)}}...</h5>
+                    <h6 class="font-light text-gray-600">Ordered Quantity:
+                        {{orderDetails.orderedItem.orderedQuantity}}
+                    </h6>
+                    <h6 class="font-light text-gray-600">Item Price: ₹{{orderDetails.orderedItem.orderItemPrice}}
+                    </h6>
+                </div>
+            </div>
+            <div class="order-price">
+                <h5>₹{{orderDetails.orderedItem.orderTotal}}</h5>
+            </div>
+            <div class="order-status">
+                <span
+                    class="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">
+                    {{orderDetails.orderedItem.orderStatus.statusText | uppercase}}
+                </span>
+            </div>
+        </div>
+        <hr class="m-2">
+        <div class="timeline">
+            <p-timeline [value]="historyEvents" [layout]="'horizontal'">
+                <ng-template pTemplate="marker" let-event>
+                    <span class="custom-marker flex justify-center items-center w-8 h-8 p-2 text-white"
+                        [style.backgroundColor]="event.color">
+                        <i [ngClass]="event.icon"></i>
+                    </span>
+                </ng-template>
+                <ng-template pTemplate="content" let-event>
+                    <small class="p-text-secondary">{{event?.date | date:'d/MM/yyyy h:mm:ss a'}}</small>
+                </ng-template>
+                <ng-template pTemplate="opposite" let-event>
+                    &#123;&#123;event.status&#125;&#125;
+                </ng-template>
+            </p-timeline>
+        </div>
+    </div>
+</div>
+} @else {
+Loading...
+}

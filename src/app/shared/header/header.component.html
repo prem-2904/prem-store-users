@@ -1,0 +1,90 @@
+<header class="bg-white">
+  <nav class="mx-auto flex items-center p-4 lg:px-4" aria-label="Global">
+    <div class="flex">
+      <a href="#" routerLink="/">
+        <span class="sr-only">Your Company</span>
+        <img class="h-14 w-auto" src="assets/prem-store.png" alt="">
+      </a>
+    </div>
+
+    <div class="w-full flex-1 lg:flex lg:gap-x-5 px-7">
+      <div class="w-full">
+        <label for="default-search"
+          class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+            </svg>
+          </div>
+          <input type="search" id="default-search"
+            class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search Mockups, Logos..." required />
+        </div>
+      </div>
+    </div>
+    <div class="hidden lg:flex lg:justify-end lg:items-center">
+      <a href="#" routerLink="/store/wishlist"
+        class="text-sm font-semibold leading-6 text-gray-900 px-4 py-2 flex gap-2 hover:bg-gray-300 relative">
+        @if (actionService.wishlisted()>0) {
+        <div
+          class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 end-14 dark:border-gray-900">
+          {{actionService.wishlisted()}}
+        </div>
+        }
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+        </svg>
+        <span aria-hidden="true">Wishlist</span>
+      </a>
+      <a href="#" routerLink="/store/cart"
+        class="text-sm font-semibold leading-6 text-gray-900 px-4 py-2 flex gap-2 hover:bg-gray-300 relative">
+        @if (actionService.addedToCart()>0) {
+        <div
+          class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 end-14 dark:border-gray-900">
+          {{actionService.addedToCart()}}
+        </div>
+        }
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+        </svg>
+        <span aria-hidden="true">Cart</span>
+      </a>
+      @if (isLoggedIn) {
+      <p-menu #menu [model]="menuItems" [popup]="true" />
+      <button class="lg:flex lg:items-center lg:gap-4" (click)="menu.toggle($event)">
+        <img src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar"
+          class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />{{loggedUserProfile?.fullName}}
+      </button>
+      } @else {
+      <a href="#" routerLink="/auth/login"
+        class="text-sm font-semibold leading-6 text-gray-900 px-4 py-2 flex gap-2 hover:bg-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
+        </svg>
+        <span aria-hidden="true">Log In</span>
+      </a>
+      }
+
+    </div>
+    <div class="flex lg:hidden">
+      <p-menu #menu [model]="mobileMenuItems" [popup]="true" />
+      <button (click)="menu.toggle($event)" type="button"
+        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+        <span class="sr-only">Open main menu</span>
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
