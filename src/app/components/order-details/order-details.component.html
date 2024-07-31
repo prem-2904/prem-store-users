@@ -1,21 +1,20 @@
+@if (orderDetails) {
 <div class="breadcrumbs flex justify-between bg-white">
     <app-breadcrumbs [items]="breadcrumbsData" />
     <div class="actions flex justify-center items-center px-2">
         @if (orderDetails.orderedItem.orderStatus._id==="delivered") {
-        <button type="button"
+        <button type="button" (click)="returnOrder(orderDetails.orderData._id)"
             class="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-bold rounded">
             Return Order
         </button>
         } @else if (orderDetails.orderedItem.orderStatus.statusOrder &&orderDetails.orderedItem.orderStatus.statusOrder
-        <=4) { <button type="button"
+        <=4) { <button type="button" (click)="cancelOrder(orderDetails.orderData._id)"
             class="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-bold rounded">
             Cancel Order
             </button>
             }
     </div>
 </div>
-
-@if (orderDetails) {
 <div class="border border-gray-200 bg-white px-2 py-3 my-4">
     <div class="flex gap-2 justify-between align-top px-4">
         <div class="orderdata">

@@ -13,6 +13,7 @@ import { TimelineModule } from 'primeng/timeline';
 import { ButtonModule } from 'primeng/button';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { BreadcrumbsComponent } from '../../shared/breadcrumbs/breadcrumbs.component';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-order-details',
@@ -33,6 +34,7 @@ export class OrderDetailsComponent {
   destroyRef$ = new Subject<boolean>();
   orderDetails!: IOrderedDetail;
   orderService = inject(OrdersService);
+  toastService = inject(ToastService);
   breadcrumbsData!: MenuItem[];
   historyEvents: any = [];
   ngOnInit() {
@@ -73,6 +75,36 @@ export class OrderDetailsComponent {
     );
     this.historyEvents = updatedOrderHistory;
     orderDetails.orderedItem = updatedItems;
+  }
+
+  cancelOrder(orderId: string) {
+    this.orderService
+      .cancelOrder(orderId)
+      .pipe(takeUntil(this.destroyRef$))
+      .subscribe({
+        next: (order: any) => {
+          this.toastService.showSuccess(order.message);
+          this.loadOrderDetails();
+        },
+        error: (err) => {
+          this.toastService.showError(err.message);
+        },
+      });
+  }
+
+  returnOrder(orderId: string) {
+    this.orderService
+      .returnOrder(orderId)
+      .pipe(takeUntil(this.destroyRef$))
+      .subscribe({
+        next: (status: any) => {
+          this.toastService.showSuccess('Return order initiated!');
+          this.loadOrderDetails();
+        },
+        error: (error) => {
+          this.toastService.showError(error.message);
+        },
+      });
   }
 
   ngOnDestroy() {

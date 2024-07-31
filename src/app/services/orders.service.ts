@@ -48,4 +48,18 @@ export class OrdersService {
   getOrderWithUnitv2(filters: string) {
     return this._http.get(`${BASE_URL}/order/v2/getOrderIdWithUnit?${filters}`);
   }
+
+  cancelOrder(orderId: string) {
+    const payload = {
+      orderId: orderId,
+    };
+    return this._http.put(`${BASE_URL}/order/cancelOrder`, payload);
+  }
+
+  returnOrder(orderId: string) {
+    const payload = {
+      orderId: orderId,
+    };
+    return this._http.put(`${BASE_URL}/order/updateOrder`, payload);
+  }
 }
