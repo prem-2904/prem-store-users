@@ -20,6 +20,7 @@ export const routes: Routes = [
       },
       {
         path: 'products',
+        title: 'Products',
         loadComponent: () =>
           import('./components/products/products.component').then(
             (p) => p.ProductsComponent
@@ -27,6 +28,7 @@ export const routes: Routes = [
       },
       {
         path: 'products/:name',
+        title: 'Products',
         loadComponent: () =>
           import('./components/product-detail/product-detail.component').then(
             (pd) => pd.ProductDetailComponent
@@ -34,6 +36,7 @@ export const routes: Routes = [
       },
       {
         path: 'home',
+        title: 'Home',
         loadComponent: () =>
           import('./components/home/home.component').then(
             (h) => h.HomeComponent
@@ -41,6 +44,7 @@ export const routes: Routes = [
       },
       {
         path: 'cart',
+        title: 'Cart',
         loadComponent: () =>
           import('./components/cart/cart.component').then(
             (c) => c.CartComponent
@@ -48,6 +52,7 @@ export const routes: Routes = [
       },
       {
         path: 'wishlist',
+        title: 'Wishlist',
         loadComponent: () =>
           import('./components/wishlist/wishlist.component').then(
             (w) => w.WishlistComponent
@@ -55,6 +60,7 @@ export const routes: Routes = [
       },
       {
         path: 'checkout',
+        title: 'Checkout',
         loadComponent: () =>
           import('./components/checkout/checkout.component').then(
             (co) => co.CheckoutComponent
@@ -62,6 +68,7 @@ export const routes: Routes = [
       },
       {
         path: 'order-summary',
+        title: 'Order Summary',
         loadComponent: () =>
           import('./components/order-summary/order-summary.component').then(
             (os) => os.OrderSummaryComponent
@@ -69,6 +76,7 @@ export const routes: Routes = [
       },
       {
         path: 'orders',
+        title: 'Orders',
         loadComponent: () =>
           import('./components/orders/orders.component').then(
             (o) => o.OrdersComponent
@@ -76,6 +84,7 @@ export const routes: Routes = [
       },
       {
         path: 'order-details',
+        title: 'Order details',
         loadComponent: () =>
           import('./components/order-details/order-details.component').then(
             (od) => od.OrderDetailsComponent
