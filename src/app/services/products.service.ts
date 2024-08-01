@@ -21,4 +21,10 @@ export class ProductsService {
     let amountAfterDiscount = amount - discountedRate;
     return { price: amountAfterDiscount, discountedRate: discountedRate };
   }
+
+  searchProducts(searchKey: string) {
+    return this._http.get(
+      `${BASE_URL}/product/searchproduct?search=${searchKey}`
+    );
+  }
 }
