@@ -44,6 +44,14 @@ export class ActionsService {
     return this._http.post(`${API_URL}/wishlist/removecartitem`, payload);
   }
 
+  updateCartQuantity(id: string, quantity: number): Observable<any> {
+    const payload = {
+      id: id,
+      quantity: quantity,
+    };
+    return this._http.put(`${API_URL}/wishlist/updateQuantity`, payload);
+  }
+
   getCartItems(id: any): Observable<any> {
     return this._http.get(`${API_URL}/wishlist/getusercart?id=${id}`);
   }
@@ -72,5 +80,9 @@ export class ActionsService {
 
   getNotifications(userId: string): Observable<any> {
     return this._http.get(`${API_URL}/notifications/notifications/${userId}`);
+  }
+
+  validateCheckout(userId: string): Observable<any> {
+    return this._http.get(`${API_URL}/wishlist/validateCheckout/${userId}`);
   }
 }

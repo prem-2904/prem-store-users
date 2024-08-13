@@ -75,6 +75,8 @@ export interface CartProduct {
   salePrice?: number;
   totalPrice?: string;
   sellerId?: string;
+  noAvailableQty?: boolean;
+  availableQty?: number;
 }
 
 export interface ItemId {

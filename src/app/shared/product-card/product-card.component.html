@@ -7,7 +7,7 @@
             <div
                 class="group relative w-60 bg-white rounded-lg shadow-md hover:shadow-lg transform hover:scale-102 transition duration-300 ease-in-out border border-gray-100 slide m-4">
                 <div
-                    class="hidden absolute right-1 enableOnHover group-hover:block group-hover:animate-pulse cursor-pointer">
+                    class="hidden absolute right-1 enableOnHover group-hover:block cursor-pointer">
                     <svg (click)="wishlistAction(product._id,$index,product?.wishlistId)"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 {{product.isWishlisted?'fill-red-500':''}}">
@@ -52,7 +52,6 @@
                 </div>
             </div>
             }
-            <!-- More products... -->
         </div>
     </div>
 </div>
