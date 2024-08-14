@@ -3,12 +3,12 @@ import { ActionsService } from '../../services/actions.service';
 import { AuthService } from '../../services/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ProductsService } from '../../services/products.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.scss',
 })
@@ -22,7 +22,7 @@ export class WishlistComponent {
   loggedUserId: string = this.authService.loggedUserId;
 
   ngOnInit() {
-    this.loadWishlistItems();
+    if (this.authService.isLoggedIn) this.loadWishlistItems();
   }
 
   loadWishlistItems() {

@@ -1,3 +1,12 @@
+@if (!authService.isLoggedIn) {
+<div class="bg-white shadow w-full h-40 flex items-center justify-center flex-col gap-4 rounded">
+    <p>Please login to view your favourite items</p>
+    <button routerLink="/auth/login" class="p-3 bg-blue-400 text-white hover:bg-blue-600">
+        Go to Login!
+    </button>
+</div>
+}
+@else if (wishlistDetails && wishlistDetails.length) {
 <div class="bg-white m-auto px-8 py-4 h-auto shadow mb-4">
     <h3 class="font-bold py-4">Wishlist Items({{wishlistDetails.length}})</h3>
     <div class="items flex gap-2 flex-col w-full">
@@ -40,3 +49,12 @@
         }
     </div>
 </div>
+}
+@else {
+<div class="bg-white shadow w-full h-40 flex items-center justify-center flex-col gap-4 rounded">
+    <p>No items marked as favourite</p>
+    <button routerLink="/store" class="p-3 bg-blue-400 text-white hover:bg-blue-600">
+        Go to shop!
+    </button>
+</div>
+}

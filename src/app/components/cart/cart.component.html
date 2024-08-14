@@ -1,4 +1,12 @@
-@if (cartDetails && cartDetails.cartProduct && cartDetails.cartProduct.length) {
+@if (!authService.isLoggedIn) {
+<div class="bg-white shadow w-full h-40 flex items-center justify-center flex-col gap-4 rounded">
+    <p>Please login to view your cart items</p>
+    <button routerLink="/auth/login" class="p-3 bg-blue-400 text-white hover:bg-blue-600">
+        Go to Login!
+    </button>
+</div>
+}
+@else if (cartDetails && cartDetails.cartProduct && cartDetails.cartProduct.length) {
 <div class="w-full flex gap-4 flex-col lg:flex-row min-w-min pb-4 min-h-96">
     <div class="lg:w-2/3 w-full cart">
         <div class="bg-white m-auto shadow-xl h-auto px-8 py-3 mb-4">
@@ -31,8 +39,8 @@
                         </div>
                     </div>
                     <div class="quantity">
-                        <select [(ngModel)]="item.quantity" (change)="calculateTotalPrice($event,item._id)" name="quantity"
-                            id="quantity"
+                        <select [(ngModel)]="item.quantity" (change)="calculateTotalPrice($event,item._id)"
+                            name="quantity" id="quantity"
                             class="p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -50,7 +58,8 @@
                     </div>
                 </div>
                 @if (!item.noAvailableQty) {
-                    <span class="text-red-500">Only {{item.availableQty}} available for order, modify your quantity to proceed!</span>
+                <span class="text-red-500">Only {{item.availableQty}} available for order, modify your quantity to
+                    proceed!</span>
                 }
                 <hr>
                 }
@@ -100,5 +109,4 @@
         Go to shop!
     </button>
 </div>
-
 }

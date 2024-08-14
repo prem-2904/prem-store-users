@@ -6,8 +6,8 @@ const BASE_URL = environment.API_BASE;
   providedIn: 'root',
 })
 export class AuthService {
-  loggedUserId: string = '662e5c65e13cc61c3f9a2744';
-  isLoggedIn: boolean = true;
+  loggedUserId!: string;
+  isLoggedIn: boolean = false;
   constructor(private _http: HttpClient) {}
 
   validateUser(payload: any) {
