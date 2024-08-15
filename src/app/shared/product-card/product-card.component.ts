@@ -5,7 +5,9 @@ import {
   Input,
   Output,
   SimpleChanges,
+  effect,
   inject,
+  input,
 } from '@angular/core';
 import { IProducts } from '../../utils/products';
 import { Router, RouterLink } from '@angular/router';
@@ -20,7 +22,9 @@ import { ProductsService } from '../../services/products.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCardComponent {
-  @Input({ required: true }) products!: IProducts[];
+  // @Input({ required: true }) product!: IProducts;
+  product = input.required<IProducts>();
+  // product!: IProducts;
   @Output() wishlist = new EventEmitter<any>();
   @Output() cart = new EventEmitter<any>();
   slideConfig = { slidesToShow: 5, slidesToScroll: 1 };
@@ -28,8 +32,15 @@ export class ProductCardComponent {
   isMobile!: boolean;
   productService = inject(ProductsService);
 
+  constructor() {
+    effect(() => {
+      // this.product = this.productSignal();
+      console.log('products', this.product());
+    });
+  }
+
   ngOnInit() {
-    console.log('products', this.products);
+    console.log('products', this.product());
     this.checkIfMobile(); // Check initially
     window.addEventListener('resize', () => {
       console.log('resize triggered!');

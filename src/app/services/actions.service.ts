@@ -41,7 +41,7 @@ export class ActionsService {
   }
 
   removeFromCart(payload: any): Observable<any> {
-    return this._http.post(`${API_URL}/wishlist/removecartitem`, payload);
+    return this._http.put(`${API_URL}/wishlist/removecartitem`, payload);
   }
 
   updateCartQuantity(id: string, quantity: number): Observable<any> {

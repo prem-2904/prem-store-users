@@ -122,7 +122,7 @@ export class ProductDetailComponent {
         next: (cart) => {
           console.log('Added to cart', cart['data']);
           this.actionService.increaseAddToCart();
-          this.productDetails.isAddedToCart = true;
+          this.productDetails.isAddedtoCart = true;
           this.productDetails.cartId = cart.data['cartId'];
           this._cd.detectChanges();
           this.toastService.showSuccess(cart.message);
@@ -148,7 +148,7 @@ export class ProductDetailComponent {
           console.log('Added to cart', cart['data']);
           this.actionService.decreaseAddToCart();
           this.productDetails.cartId = undefined;
-          this.productDetails.isAddedToCart = false;
+          this.productDetails.isAddedtoCart = false;
           this._cd.detectChanges();
           this.toastService.showSuccess(cart.message);
         },

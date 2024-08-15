@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  signal,
 } from '@angular/core';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ProductsService } from '../../services/products.service';
@@ -11,6 +12,8 @@ import { ProductCardComponent } from '../../shared/product-card/product-card.com
 import { AdsComponent } from '../../shared/ads/ads.component';
 import { ActionsService } from '../../services/actions.service';
 import { AuthService } from '../../services/auth.service';
+import { IProducts } from '../../utils/products';
+import { ToastService } from '../../services/toast.service';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -22,9 +25,11 @@ export class HomeComponent {
   productService = inject(ProductsService);
   actionService = inject(ActionsService);
   authService = inject(AuthService);
+  toastService = inject(ToastService);
   _cd = inject(ChangeDetectorRef);
   destory$: Subject<boolean> = new Subject<boolean>();
   products: any = [];
+  productSignal = signal<IProducts[]>([]);
   cartData: any = [];
   wishlistData: any = [];
 
@@ -109,6 +114,8 @@ export class HomeComponent {
               return product;
             });
 
+            this.productSignal.set(this.products);
+
             console.log('product-updated', this.products);
           }
         },
@@ -142,13 +149,13 @@ export class HomeComponent {
 
   cartAction(cart: any) {
     if (cart.cartId) {
-      this.removeCart(cart.cartId, cart.rowI);
+      this.removeCart(cart.cartId, cart.productId);
     } else {
-      this.addToCart(cart.productId, cart.rowI);
+      this.addToCart(cart.productId);
     }
   }
 
-  addToCart(productId: string, row: number) {
+  addToCart(productId: string) {
     const payload = {
       userId: this.authService.loggedUserId,
       itemId: productId,
@@ -162,17 +169,20 @@ export class HomeComponent {
         next: (cart) => {
           console.log('Added to cart', cart['data']);
           this.actionService.increaseAddToCart();
-          this.products[row]['cartId'] = cart['data'];
-          this.products[row]['isAddedtoCart'] = true;
-          this._cd.detectChanges();
+          const productIdx = this.getProductIdx(productId);
+          this.products[productIdx]['cartId'] = cart['data'];
+          this.products[productIdx]['isAddedtoCart'] = true;
+          this.toastService.showSuccess(cart?.message);
+          console.log(this.products[productIdx]);
         },
         error: (err) => {
           console.log('error on add to cart', err);
+          this.toastService.showError(err?.message);
         },
       });
   }
 
-  removeCart(cartId: string, row: number) {
+  removeCart(cartId: string, productId: string) {
     const payload = {
       id: cartId,
       details: {
@@ -186,11 +196,14 @@ export class HomeComponent {
         next: (cart) => {
           console.log('Added to cart', cart['data']);
           this.actionService.decreaseAddToCart();
-          this.products[row]['cartId'] = null;
-          this.products[row]['isAddedtoCart'] = false;
-          this._cd.detectChanges();
+          const productIdx = this.getProductIdx(productId);
+          this.products[productIdx]['cartId'] = null;
+          this.products[productIdx]['isAddedtoCart'] = false;
+          this.toastService.showSuccess(cart?.message);
+          console.log(this.products[productIdx]);
         },
         error: (err) => {
+          this.toastService.showError(err?.message);
           console.log('error on add to cart', err);
         },
       });
@@ -217,18 +230,19 @@ export class HomeComponent {
       .subscribe({
         next: (result: any) => {
           this.actionService.increaseWishlist();
-          this.products[row]['wishlistId'] = result.data;
-          this.products[row]['isWishlisted'] = true;
-          this._cd.detectChanges();
-          // this.notificationService.success(result.message, 'Success');
+          const productIdx = this.getProductIdx(productId);
+          this.products[productIdx]['wishlistId'] = result.data;
+          this.products[productIdx]['isWishlisted'] = true;
+          this.toastService.showSuccess('Added to wishlist!');
+          console.log(this.products[productIdx]);
         },
         error: (err) => {
-          // this.notificationService.error(err.message, 'Failed');
+          this.toastService.showError(err.message);
         },
       });
   }
 
-  removeWishlist(listId: string, row: number) {
+  removeWishlist(listId: string, productId: string) {
     const payload = {
       id: listId,
       details: {
@@ -241,15 +255,22 @@ export class HomeComponent {
       .subscribe({
         next: (result: any) => {
           this.actionService.decreaseWishlist();
-          this.products[row]['wishlistId'] = null;
-          this.products[row]['isWishlisted'] = false;
-          this._cd.detectChanges();
-          // this.notificationService.success(result.message, 'Success');
+          const productIdx = this.getProductIdx(productId);
+          this.products[productIdx]['wishlistId'] = null;
+          this.products[productIdx]['isWishlisted'] = false;
+          this.toastService.showSuccess('Removed from Cart!');
+          console.log(this.products[productIdx]);
         },
         error: (err) => {
-          // this.notificationService.error(err.message, 'Failed');
+          this.toastService.showError(err.message);
         },
       });
+  }
+
+  getProductIdx(pid: string) {
+    const pIdx = this.products.findIndex((d: IProducts) => d._id === pid);
+    console.log('pIdx', pIdx);
+    return pIdx;
   }
 
   ngOnDestory() {

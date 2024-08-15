@@ -15,6 +15,7 @@ import { Router, RouterLink } from '@angular/router';
 import { OrdersService } from '../../services/orders.service';
 import { ICartDetails, OrderItem } from '../../utils/orders';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-cart',
@@ -28,6 +29,7 @@ export class CartComponent {
   productService = inject(ProductsService);
   orderService = inject(OrdersService);
   authService = inject(AuthService);
+  toastService = inject(ToastService);
   _router = inject(Router);
   destroy$ = new Subject<boolean>();
   cartItems: CartProduct[] = [];
@@ -164,6 +166,29 @@ export class CartComponent {
           actualData[element]?.availableQuan;
       }
     });
+  }
+
+  removeFromCart(cartId: string) {
+    const payload = {
+      id: cartId,
+      details: {
+        isDeleted: true,
+      },
+    };
+    this.actionService
+      .removeFromCart(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (cart) => {
+          console.log('Added to cart', cart['data']);
+          this.actionService.decreaseAddToCart();
+          this.toastService.showSuccess(cart.message);
+          this.loadUserCart();
+        },
+        error: (err) => {
+          this.toastService.showError(err.message);
+        },
+      });
   }
 
   ngOnDestroy() {

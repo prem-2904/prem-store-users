@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Signal, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ActionsService } from '../../services/actions.service';
 import { AuthService } from '../../services/auth.service';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { ProductsService } from '../../services/products.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class HeaderComponent {
   actionService = inject(ActionsService);
   authService = inject(AuthService);
   productService = inject(ProductsService);
+  _router = inject(Router);
   totalCart!: number;
   totalWishlist!: number;
   loggedUserProfile!: any;
@@ -49,8 +50,9 @@ export class HeaderComponent {
         // ],
       },
       {
-        label: 'Signout',
+        label: 'Log out',
         icon: 'pi pi-sign-out',
+        command: (c) => this.logoutUser(),
       },
     ];
 
@@ -74,11 +76,25 @@ export class HeaderComponent {
         routerLink: '/store/orders',
       },
       {
-        label: 'Signout',
+        label: 'Log out',
         icon: 'pi pi-sign-out',
+        command: (c) => this.logoutUser(),
       },
     ];
     this.searchDebounce();
+  }
+
+  logoutUser() {
+    return this.authService.logoutUser().subscribe({
+      next: (res: any) => {
+        console.log('loggged out!');
+        this.authService.clearUserSession();
+        this._router.navigate(['auth/login']);
+      },
+      error: (err: any) => {
+        console.log('logout-failed', err);
+      },
+    });
   }
 
   searchDebounce() {

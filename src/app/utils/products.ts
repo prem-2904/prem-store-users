@@ -14,7 +14,7 @@ export interface IProducts {
   mrpPrice: number;
   discount: number;
   salePrice?: number;
-  isAddedToCart?: boolean;
+  isAddedtoCart?: boolean;
   cartId?: string;
   isWishlisted?: boolean;
   wishlistId?: string;

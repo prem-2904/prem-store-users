@@ -16,6 +16,16 @@ export class AuthService {
     });
   }
 
+  createUserAccountWithGoogle(resp: any) {
+    return this._http.post(
+      `${BASE_URL}/users/createGoogleUserAccount`,
+      { creds: resp },
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
   saveSession(key: string, value: string) {
     sessionStorage.setItem(key, value);
   }
@@ -38,6 +48,7 @@ export class AuthService {
 
   setLoggedUserId() {
     if (this.isLoggedInUser()) {
+      this.isLoggedIn = true;
       this.loggedUserId = this.loggedUserDetails()?._id;
       return true;
     }
@@ -46,5 +57,11 @@ export class AuthService {
 
   clearUserSession() {
     sessionStorage.clear();
+  }
+
+  logoutUser() {
+    return this._http.get(`${BASE_URL}/users/logout`, {
+      withCredentials: true,
+    });
   }
 }
