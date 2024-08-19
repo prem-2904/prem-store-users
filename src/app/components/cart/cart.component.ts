@@ -88,6 +88,7 @@ export class CartComponent {
         stocks.discount
       ).price;
       item.totalPrice = (item.salePrice * item.quantity).toFixed(2);
+      item.noAvailableQty = true;
       totalAmount += item.salePrice * item.quantity;
       return item;
     });

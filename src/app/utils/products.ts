@@ -19,6 +19,18 @@ export interface IProducts {
   isWishlisted?: boolean;
   wishlistId?: string;
   outOfStock?: boolean;
+  offers?: Offers[];
+}
+
+export interface Offers {
+  _id: string;
+  productId: string;
+  couponName: string;
+  couponCode: string;
+  couponOfferType: string;
+  couponTerms: string;
+  minPurchase: number;
+  dateOfExpiry: string;
 }
 
 export interface SellerId {
@@ -77,6 +89,7 @@ export interface CartProduct {
   sellerId?: string;
   noAvailableQty?: boolean;
   availableQty?: number;
+  offers?: Offers[];
 }
 
 export interface ItemId {

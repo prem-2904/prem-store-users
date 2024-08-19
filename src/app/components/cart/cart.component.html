@@ -58,6 +58,11 @@
                     </div>
                 </div>
                 <div class="flex justify-between">
+                    @if (item.offers?.length) {
+                    <div>
+                        <span class="text-green-500">{{item.offers?.length}} offers available</span>
+                    </div>
+                    }
                     @if (!item.noAvailableQty) {
                     <span class="text-red-500">Only {{item.availableQty}} available for order, modify your quantity to
                         proceed!</span>

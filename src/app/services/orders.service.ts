@@ -62,4 +62,8 @@ export class OrdersService {
     };
     return this._http.put(`${BASE_URL}/order/updateOrder`, payload);
   }
+
+  calculateOffers(payload: any) {
+    return this._http.post(`${BASE_URL}/offers/calculateCoupon`, payload);
+  }
 }

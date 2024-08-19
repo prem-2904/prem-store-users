@@ -19,6 +19,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ActionsService } from '../../services/actions.service';
 import { CommonModule } from '@angular/common';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-checkout',
@@ -31,6 +32,7 @@ export class CheckoutComponent {
   orderService = inject(OrdersService);
   authService = inject(AuthService);
   actionService = inject(ActionsService);
+  toastService = inject(ToastService);
   _fb = inject(FormBuilder);
   router = inject(Router);
   destroyRef$ = new Subject<boolean>();
@@ -40,10 +42,14 @@ export class CheckoutComponent {
   orderPayload!: IOrder;
   loggedUserId = this.authService.loggedUserId;
   isStartedProcess: boolean = false;
+  applyCoupon: any;
+  appliedCoupons: any = [];
   ngOnInit() {
     console.log(this.orderService.orderCartDetails, 'Order-Data');
     if (!this.orderService?.orderCartDetails) {
       this.router.navigate(['store/cart']);
+    } else {
+      this.getOffersList();
     }
     this.initCheckoutForm();
   }
@@ -218,6 +224,7 @@ export class CheckoutComponent {
           : paymentDetails?.razorpay_payment_id
           ? 'PAID'
           : 'NOT PAID',
+      offers: this.appliedCoupons,
     };
 
     this.orderService
@@ -240,6 +247,48 @@ export class CheckoutComponent {
           // );
         },
       });
+  }
+
+  getOffersList() {
+    let productIds: any = [];
+    this.orderService.orderCartDetails.cartProduct.forEach((data: any) => {
+      productIds.push(data.itemId._id);
+    });
+
+    console.log('getOffersList', productIds);
+  }
+
+  calculateCoupon(totalAmount: any) {
+    if (
+      this.appliedCoupons.findIndex((c: any) => c === this.applyCoupon) === -1
+    ) {
+      const payload = {
+        couponCode: this.applyCoupon,
+        totalAmount: totalAmount,
+      };
+      this.orderService
+        .calculateOffers(payload)
+        .pipe(takeUntil(this.destroyRef$))
+        .subscribe({
+          next: (offer: any) => {
+            let conpon = offer.data;
+            this.toastService.showSuccess(offer.message);
+            this.cartDetails.totalPrice = conpon?.totalAmount;
+            this.appliedCoupons.push({
+              coupon: this.applyCoupon,
+              discount: conpon?.discountedRate,
+              couponId: conpon?.couponId,
+            });
+            this.applyCoupon = '';
+          },
+          error: (err) => {
+            this.toastService.showError(err.message);
+          },
+        });
+    } else {
+      this.toastService.showError('Coupon already applied!');
+      this.applyCoupon = '';
+    }
   }
 
   ngOnDestroy() {
