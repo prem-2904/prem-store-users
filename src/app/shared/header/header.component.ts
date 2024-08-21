@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Signal, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Signal,
+  inject,
+} from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ActionsService } from '../../services/actions.service';
 import { AuthService } from '../../services/auth.service';
@@ -15,6 +20,7 @@ import { ProductsService } from '../../services/products.service';
   imports: [CommonModule, RouterLink, MenuModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   productMenu: boolean = false;

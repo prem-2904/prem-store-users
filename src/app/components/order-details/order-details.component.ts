@@ -1,4 +1,9 @@
-import { Component, Input, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  inject,
+} from '@angular/core';
 import { OrdersService } from '../../services/orders.service';
 import { Subject, takeUntil } from 'rxjs';
 import {
@@ -28,6 +33,7 @@ import { ToastService } from '../../services/toast.service';
   ],
   templateUrl: './order-details.component.html',
   styleUrl: './order-details.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderDetailsComponent {
   @Input() orderId!: string;

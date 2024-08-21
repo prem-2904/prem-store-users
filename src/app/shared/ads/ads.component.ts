@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 @Component({
   selector: 'app-ads',
@@ -6,6 +6,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
   imports: [SlickCarouselModule],
   templateUrl: './ads.component.html',
   styleUrl: './ads.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdsComponent {
   slides = [
