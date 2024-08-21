@@ -16,10 +16,6 @@ export class AppComponent {
   authService = inject(AuthService);
   _router = inject(Router);
   ngOnInit() {
-    if (!this.authService.isLoggedInUser()) {
-      this._router.navigate(['auth/login']);
-    } else {
-      this.authService.setLoggedUserId();
-    }
+    this.authService.setLoggedUserId();
   }
 }

@@ -214,12 +214,12 @@ export class CheckoutComponent {
       orderAddressPincode: orderDetais.pincode,
       orderEmail: orderDetais.email,
       orderPhone: orderDetais.mobile,
-      orderStatus: this.paymentType == 'inperson' ? 'delivered' : 'ordered',
+      orderStatus: this.paymentType === 'cash' ? 'delivered' : 'ordered',
       orderItems: orderItemsPayload,
       orderedBy: this.loggedUserId,
       updatedBy: this.loggedUserId,
       orderAmountPaid:
-        this.paymentType == 'inperson'
+        this.paymentType === 'cash'
           ? 'RECEIVED'
           : paymentDetails?.razorpay_payment_id
           ? 'PAID'

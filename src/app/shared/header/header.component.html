@@ -59,8 +59,8 @@
       </a>
       @if (isLoggedIn) {
       <p-menu #menu [model]="menuItems" [popup]="true" />
-      <button class="lg:flex lg:items-center lg:gap-4" (click)="menu.toggle($event)">
-        <img src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar"
+      <button class="lg:flex lg:items-center lg:gap-2" (click)="menu.toggle($event)">
+        <img [src]="loggedUserProfile.profilePicture" alt="avatar"
           class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />{{loggedUserProfile?.fullName}}
       </button>
       } @else {

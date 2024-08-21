@@ -119,6 +119,7 @@ export class HeaderComponent {
     this.isLoggedIn = isLoggedIn;
     const loggedUserDetails = this.authService.loggedUserDetails();
     if (isLoggedIn) {
+      console.log(loggedUserDetails);
       this.loggedUserProfile = loggedUserDetails;
       this.loadActions();
     }

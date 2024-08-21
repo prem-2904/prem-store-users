@@ -32,20 +32,24 @@ export class ProductDetailComponent {
   productService = inject(ProductsService);
   actionService = inject(ActionsService);
   toastService = inject(ToastService);
+  authService = inject(AuthService);
   _cd = inject(ChangeDetectorRef);
   destory$ = new Subject<boolean>();
   openTab = 1;
   productDetails!: IProducts;
   displayImg!: string;
-  loggedUserId: string = inject(AuthService).loggedUserId;
+  loggedUserId: string = this.authService.loggedUserId;
   isItemActions: any;
   wishlist$: any;
   breadcrumbsData: MenuItem[] | undefined;
   isWishlisted = signal(false);
   isAddedToCart = signal(false);
+  ratingDetails!: any;
   ngOnInit() {
     this.loadProductDetails();
-    this.loadCart(this.pid);
+    if (this.authService.isLoggedInUser()) {
+      this.loadCart(this.pid);
+    }
     this.breadcrumbsData = [
       { icon: 'pi pi-home', route: '/store' },
       { label: 'Products', route: '/store' },
@@ -55,6 +59,16 @@ export class ProductDetailComponent {
         queryParams: [{ pid: this.pid }],
       },
     ];
+  }
+
+  validateColorCodes(rating: number) {
+    if (rating >= 4) {
+      return 'bg-green-100 text-green-600';
+    } else if (rating >= 3 && rating < 4) {
+      return 'bg-orange-100 text-orange-600';
+    } else {
+      return 'bg-pink-100 text-pink-600';
+    }
   }
 
   loadProductDetails() {
@@ -67,6 +81,7 @@ export class ProductDetailComponent {
             details['data']?.[0]
           );
           this.displayImg = this.productDetails?.productImages?.[0];
+          this.ratingDetails = details['data']?.[1];
         },
         error: (err: any) => {
           this.toastService.showError(err.message);

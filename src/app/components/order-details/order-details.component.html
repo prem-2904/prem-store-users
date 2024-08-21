@@ -100,6 +100,41 @@
                 </ng-template>
             </p-timeline>
         </div>
+        @if (orderDetails.orderedItem.orderStatus._id==="delivered") {
+        @if (isAlreadyRated) {
+        <div class="flex gap-2">
+            <div class="rating">
+                <p class="m-2">You already rated this item</p>
+                <p-rating class="m-2" [(ngModel)]="rateDetails.rating" [cancel]="false" />
+            </div>
+            <div class="rating-comments">
+                <p class="m-2">Your comments</p>
+                <p class="m-2">{{rateDetails.comments}}</p>
+            </div>
+        </div>
+        }
+        @else {
+        <div class="flex gap-2 items-start">
+            <div class="rating">
+                <p class="m-2">Rate this product</p>
+                <p-rating class="m-2" [(ngModel)]="rateProduct" [cancel]="false" />
+            </div>
+            <div class="flex-1">
+                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                    comments</label>
+                <textarea id="message" rows="3" [(ngModel)]="reviewProduct"
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Write your thoughts here..."></textarea>
+            </div>
+            <div class="items-end">
+                <button type="button" (click)="addRating()"
+                    class="min-w-[150px] px-2 py-1 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-bold rounded">
+                    Submit
+                </button>
+            </div>
+        </div>
+        }
+        }
     </div>
 </div>
 } @else {
